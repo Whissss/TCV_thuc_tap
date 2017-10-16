@@ -1,0 +1,104 @@
+<table width='100%'>
+    <tr>
+        <td>
+            <div style="float: left; margin-left: 15px;">
+                <strong>Developer 19</strong><br/>
+                <strong>HN-VN</strong>
+            </div>
+        </td>
+        <td></td>
+        <td>
+            <div style="float: right; margin-right: 15px; text-align: right;">
+                <strong>Department ----------------
+                <br />Time : 14/10/2017
+                </strong>
+                <br />
+                <strong>developer19</strong>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+        </td>
+        <td><div style="text-align: center;">
+                <h1>List Search User_Name</h1>
+                <p>14/10/2016-14/10/2017</p>
+            </div></td>
+        <td></td>
+    </tr>
+</table>
+<?php 
+?>
+<form action="" method="post">
+    <table width='100%' style="border: 1px solid;">
+        <tr>
+            <td>
+                <span class="ui-widget">
+                    <label for="name">[[.full_name.]]:</label>
+                        <input name="full_name" type="text" id="full_name" onfocus="Autocomplate()" autocomplete="off" />
+                        <input name="hrm_staff_id" type="hidden" id="hrm_staff_id" />
+                </span>
+            </td>
+            <td>
+                Department:
+                        <input name="department" type="text" id="department" onfocus="Autocomplate_Department()" autocomplete="off"/>
+                        <input name="hrm_department_id" type="hidden" id="hrm_department_id" />
+            </td>
+            <td>
+                Position:<input name="position" type="text" id="position" onfocus="Autocomplate_Position()" autocomplete="off"/>
+                        <input name="hrm_position_id" type="hidden" id="hrm_position_id" />
+            </td>
+            <td><input type="submit" value="Send"/></td>
+        </tr>
+    </table>
+</form>
+<br/><br />
+<table width="100%" border="4px" style="text-align: center;">
+    <tr>
+        <td><h3>Id</h3></td>
+        <td><h3>Full Name</h3></td>
+        <td><h3>Birthday</h3></td>
+        <td><h3>Department</h3></td>
+        <td><h3>Position</h3></td>
+    </tr>
+    <!--LIST:sql-->
+    <tr>
+        <td>[[|sql.id|]]</td>
+        <td>[[|sql.full_name|]]</td>
+        <td>[[|sql.birthday|]]</td>
+        <td>[[|sql.hrm_department_name|]]</td>
+        <td>[[|sql.hrm_regency_name|]]</td>
+    </tr>
+    <!--/LIST:sql-->
+    
+</table>
+
+<script>
+function Autocomplate()
+{
+    jQuery( "#full_name" ).autocomplete({
+          url: 'get_name.php?LoadName=1',
+          onItemSelect: function(item){
+            document.getElementById('hrm_staff_id').value = item.data[0];
+          }
+    });
+}
+function Autocomplate_Department()
+{
+    jQuery("#department").autocomplete({
+        url: 'get_name.php?LoadDepartment=1',
+        onItemSelect: function(item){
+            document.getElementById('hrm_department_id').value = item.data[0];
+          } 
+    });
+}
+function Autocomplate_Position()
+{
+    jQuery("#position").autocomplete({
+        url : 'get_name.php?LoadPosition=1' ,
+        onItemSelect: function(item){
+            document.getElementById('hrm_position_id').value = item.data[0];
+        }
+    });
+}
+</script>

@@ -1,0 +1,48 @@
+<?php 
+class TestPtForm extends Form
+{
+    function TestPtForm()
+	{
+		Form::Form('TestPtForm');
+        $this->link_js('packages/core/includes/js/jquery/jquery.autocomplete.js');
+		$this->link_css('packages/core/skins/default/css/jquery.autocomplete.css');
+        $this->link_js('packages/core/includes/js/jquery/ui/jquery.ui.widget.js');
+	}
+    function on_submit()
+    {
+        System::debug(Url::get('hrm_staff_id'));
+    }
+    function draw()
+    {
+        $this->map = array();
+        $cond = "1=1" ;
+        if(Url::get('hrm_staff_id'))
+        {
+            $cond .= ' AND hrm_staff.id = \''.Url::get('hrm_staff_id').'\' ' ;
+        }
+        if(Url::get('hrm_department_id'))
+        {
+            $cond .= ' AND hrm_department.id = \''.Url::get('hrm_department_id').'\' ' ;
+        }
+        if(Url::get('hrm_position_id')){
+            $cond .= ' AND hrm_regency.id = \''.Url::get('hrm_position_id').'\' ' ;
+        }
+        $sql = " 
+                SELECT
+                    hrm_staff.id as id,
+                    hrm_staff.first_name || ' ' || hrm_staff.last_name as full_name,
+                    TO_CHAR(hrm_staff.birthday, 'DD/MM/YYYY') as birthday,
+                    hrm_department.name as hrm_department_name,
+                    hrm_regency.name as hrm_regency_name
+                FROM
+                    hrm_staff
+                    LEFT JOIN hrm_department ON hrm_staff.hrm_department_id = hrm_department.id
+                    LEFT JOIN hrm_regency ON hrm_staff.hrm_regency_id = hrm_regency.id
+                WHERE ".$cond."    
+        " ;
+        //System::debug(DB::fetch_all($sql));
+        $this->map["sql"] = DB::fetch_all($sql) ;
+        $this->parse_layout('report',$this->map);
+    }
+}
+?>

@@ -2,7 +2,6 @@ foreach($service_detail as $k=>$v)
         {
             if(isset($extra_service[$v['invoice_id']]))
             {
-                $extra_service[$v['invoice_id']]['detail'][$v['id']]['id']=$v['id'];
                 $extra_service[$v['invoice_id']]['detail'][$v['id']]['invoice_id']=$v['invoice_id'];
                 $extra_service[$v['invoice_id']]['detail'][$v['id']]['name']=$v['name'];
                 $extra_service[$v['invoice_id']]['detail'][$v['id']]['price']=$v['price'];

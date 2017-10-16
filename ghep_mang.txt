@@ -1,0 +1,70 @@
+<?php 
+class TestPtForm extends Form
+{
+    function TestPtForm()
+	{
+		Form::Form('TestPtForm');
+        $this->link_js('packages/core/includes/js/jquery/jquery.autocomplete.js');
+		$this->link_css('packages/core/skins/default/css/jquery.autocomplete.css');
+        $this->link_js('packages/core/includes/js/jquery/ui/jquery.ui.widget.js');
+	}
+    function on_submit()
+    {
+        System::debug(Url::get('hrm_staff_id'));
+    }
+    function draw()
+    {
+        $this->map = array();
+        $cond = "1=1" ;
+        if(Url::get('hrm_staff_id'))
+        {
+            $cond .= ' AND hrm_staff.id = \''.Url::get('hrm_staff_id').'\' ' ;
+        }
+        if(Url::get('hrm_department_id'))
+        {
+            $cond .= ' AND hrm_department.id = \''.Url::get('hrm_department_id').'\' ' ;
+        }
+        if(Url::get('hrm_position_id')){
+            $cond .= ' AND hrm_regency.id = \''.Url::get('hrm_position_id').'\' ' ;
+        } 
+        $sql = " 
+                SELECT
+                    hrm_staff.id as id,
+                    hrm_staff.first_name || ' ' || hrm_staff.last_name as full_name,
+                    hrm_staff.hrm_department_id as department_id,
+                    hrm_department.name as name
+                FROM
+                    hrm_staff
+                INNER JOIN hrm_department ON hrm_staff.hrm_department_id = hrm_department.id
+        " ;
+        //
+        //$this->map["sql"] = DB::fetch_all($sql) ;
+        $staff_list = DB::fetch_all($sql);
+        //System::debug($staff_list);
+        $department_list = '
+                        SELECT
+                            *
+                        FROM
+                            hrm_department
+        ';
+        $department_list = DB::fetch_all($department_list);
+        //System::debug($department_list);
+        $iteam = array();
+        foreach($staff_list as $k=>$v)
+        {
+            if(!isset($iteam[$v['department_id']]))
+            {
+                $iteam[$v['department_id']]['id'] = $v['department_id'];
+                $iteam[$v['department_id']]['name']= $v['name'];
+                $iteam[$v['department_id']]['child'] = array();
+            }
+            $iteam[$v['department_id']]['child'][$v['id']]['id']=$v['id']; 
+            $iteam[$v['department_id']]['child'][$v['id']]['name']=$v['full_name'];
+            $iteam[$v['department_id']]['child'][$v['id']]['department']= $v['name'];
+        }
+        System::debug($iteam);
+        
+        //$this->parse_layout('report',$this->map);
+    }
+}
+?>
