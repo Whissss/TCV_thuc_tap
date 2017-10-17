@@ -1,0 +1,15 @@
+foreach($staff as $key => $value)
+        {
+            if(!isset($items[$value['hrm_department_id']]))
+            {
+                $items[$value['hrm_department_id']] = $department[$value['hrm_department_id']];
+                if(isset($department[$value['hrm_department_id']]))
+                {
+                    $items[$value['hrm_department_id']]['name'] = $value['name'];
+                    $items[$value['hrm_department_id']]['total'] = 1;
+                }   
+            }else
+            {
+                $items[$value['hrm_department_id']]['total']++;
+            }
+        }
