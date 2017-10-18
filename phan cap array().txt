@@ -1,4 +1,4 @@
-foreach($service_detail as $k=>$v)
+ï»¿foreach($service_detail as $k=>$v)
         {
             if(isset($extra_service[$v['invoice_id']]))
             {
@@ -12,7 +12,7 @@ foreach($service_detail as $k=>$v)
             }
         }
 
--tính ti?n khi cùng mã
+-tÃ­nh ti?n khi cÃ¹ng mÃ£
 foreach($service_detail as $key => $value)
         {
             $id = $value['invoice_id'] ;

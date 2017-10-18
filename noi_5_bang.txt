@@ -1,0 +1,28 @@
+﻿$staff = DB::fetch_all('
+                            SELECT
+                                hrm_staff_status.id as id,
+                                hrm_staff.id as hrm_staff_id,
+                                hrm_staff.first_name || \' \' || hrm_staff.last_name as full_name,
+                                hrm_department.name as department_name,
+                                hrm_regency.name as regency_name,
+                                hrm_job_status.name as status_name
+                            FROM 
+                                hrm_staff_status
+                                LEFT  JOIN hrm_job_status ON hrm_staff_status.hrm_jobs_status_id = hrm_job_status.code
+                                LEFT  JOIN hrm_staff ON  hrm_staff_status.hrm_staff_id = hrm_staff.id
+                                INNER JOIN hrm_department ON hrm_staff.hrm_department_id = hrm_department.id
+                                INNER JOIN hrm_regency ON hrm_staff.hrm_regency_id = hrm_regency.id
+        ');
+        $iteams = array();
+        foreach($staff as $key => $value)
+        {
+            if(!isset($iteams[$value['id']]))
+            {
+                $iteams[$value['hrm_staff_id']]['id'] = $value['id'];
+                $iteams[$value['hrm_staff_id']]['full_name'] = $value['full_name'];
+                $iteams[$value['hrm_staff_id']]['department_name'] = $value['department_name'];
+                $iteams[$value['hrm_staff_id']]['regency_name'] = $value['regency_name'];
+            }   
+                $iteams[$value['hrm_staff_id']]['status_name'][$value['id']]['status_name']=$value['status_name'];
+                
+        }

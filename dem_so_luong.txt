@@ -1,4 +1,4 @@
-foreach($staff as $key => $value)
+﻿foreach($staff as $key => $value)
         {
             if(!isset($items[$value['hrm_department_id']]))
             {

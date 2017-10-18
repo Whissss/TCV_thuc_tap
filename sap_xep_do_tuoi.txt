@@ -1,0 +1,91 @@
+﻿<?php 
+class TestPtForm extends Form
+{
+    function TestPtForm()
+	{
+		Form::Form('TestPtForm');
+        $this->link_js('packages/core/includes/js/jquery/jquery.autocomplete.js');
+		$this->link_css('packages/core/skins/default/css/jquery.autocomplete.css');
+        $this->link_js('packages/core/includes/js/jquery/ui/jquery.ui.widget.js');;
+	}
+    function draw()
+    {
+        $this->map = array();
+        $cond = "1=1" ;
+        if(Url::get('id_staff'))
+        {
+            $cond .= ' AND hrm_staff.id = \''.Url::get('id_staff').'\' ' ;
+        }
+        if(Url::get('id_department'))
+        {
+            $cond .= ' AND hrm_department.id = \''.Url::get('id_department').'\' ' ;
+        }
+        if(Url::get('id_regency')){
+            $cond .= ' AND hrm_regency.id = \''.Url::get('id_regency').'\' ' ;
+        }
+        //); 
+        $staff = DB::fetch_all('
+                            SELECT 
+                                hrm_staff.id as id,
+                                hrm_staff.first_name || \' \' || hrm_staff.last_name as full_name,
+                                EXTRACT(YEAR FROM hrm_staff.birthday) as birthday
+                            FROM 
+                                hrm_staff
+        ');
+        $iteams = array();
+        foreach($staff as $key => $value)
+        {
+            $now = getdate();
+            if(isset($value['birthday']))
+            {
+                if(($now["year"]-$value['birthday'])<=18)
+                {
+                    $iteams['18'][$value['id']]['id']=$value['id'];
+                    $iteams['18'][$value['id']]['full_name']=$value['full_name'];
+                    $iteams['18'][$value['id']]['birthday']=$value['birthday'];
+                }
+                elseif(($now["year"]-$value['birthday'])>18 &&($now["year"]-$value['birthday'])<=20)
+                {
+                    $iteams['18-20'][$value['id']]['id']=$value['id'];
+                    $iteams['18-20'][$value['id']]['full_name']=$value['full_name'];
+                    $iteams['18-20'][$value['id']]['birthday']=$value['birthday'];
+                }
+                elseif(($now["year"]-$value['birthday'])>20 &&($now["year"]-$value['birthday'])<=30)
+                {
+                    $iteams['20-30'][$value['id']]['id']=$value['id'];
+                    $iteams['20-30'][$value['id']]['full_name']=$value['full_name'];
+                    $iteams['20-30'][$value['id']]['birthday']=$value['birthday'];
+                }
+                elseif(($now["year"]-$value['birthday'])>30 &&($now["year"]-$value['birthday'])<=40)
+                {
+                    $iteams['30-40'][$value['id']]['id']=$value['id'];
+                    $iteams['30-40'][$value['id']]['full_name']=$value['full_name'];
+                    $iteams['30-40'][$value['id']]['birthday']=$value['birthday'];
+                }
+                elseif(($now["year"]-$value['birthday'])>40 &&($now["year"]-$value['birthday'])<50)
+                {
+                    $iteams['40-50'][$value['id']]['id']=$value['id'];
+                    $iteams['40-50'][$value['id']]['full_name']=$value['full_name'];
+                    $iteams['40-50'][$value['id']]['birthday']=$value['birthday'];
+                }
+                else{
+                    $iteams['>50'][$value['id']]['id']=$value['id'];
+                    $iteams['>50'][$value['id']]['full_name']=$value['full_name'];
+                    $iteams['>50'][$value['id']]['birthday']=$value['birthday'];
+                }
+            }
+            else{
+                $iteams['Array'][$value['id']]= array();
+                $iteams['Array'][$value['id']]['id'] = $value['id'];
+                $iteams['Array'][$value['id']]['full_name']=$value['full_name'];
+                
+            }
+        }
+        System::debug($iteams);
+        //System::debug(Url::sget('test_pt'));
+        //System::debug($items);
+        //$this->map['sql']=$items;
+        //$this->parse_layout('report',$this->map);
+    }
+}
+?>
