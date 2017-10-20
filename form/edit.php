@@ -73,7 +73,6 @@ class editForm extends Form
         {
             $mh_option .= '<option value="'.$value['id'].'">'.$value['sub_name'].'</option>';            
         }
-        echo(Date_Time::day_of_month('5','2016'));
         $this->map["ca_opt"] = $ca_opt ;
         $this->map["mh_option"] = $mh_option ;
         $this->parse_layout('edit',$this->map) ;

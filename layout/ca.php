@@ -17,8 +17,8 @@
     <tr>
         <td><h3>Id</h3></td>
         <td><h3>Ca</h3></td>
-        <td><h3>M� ta</h3></td>
-        <td><h3>Xoa</h3></td>
+        <td><h3>Mô tả</h3></td>
+        <td><h3>Xóa</h3></td>
     </tr>
 <?php
     foreach($_REQUEST['c'] as $r )

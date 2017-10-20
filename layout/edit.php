@@ -54,9 +54,6 @@
     <span id="subject_sample">
         <div id="input_group_#xxxx#">
             <span class="multi-input">
-                <input name="subject[#xxxx#][id]" type="hidden" id="id_#xxxx#" style="width:115px;" />
-            </span>
-            <span class="multi-input">
                 <select name="subject[#xxxx#][ca_id]" id="ca_id_#xxxx#" style="width:115px;">[[|ca_opt|]]</select>
             </span>
             
