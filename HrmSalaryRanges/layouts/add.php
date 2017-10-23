@@ -39,9 +39,17 @@
 </span>
 <script>
 var ranges_info = <?php echo isset($_REQUEST['regency'])?String::array2js($_REQUEST['regency']):'{}';?>;
-var salary_ranges = <?php echo String::array2js([[=salary_ranges=]]); ?>;
 mi_init_rows('regency',ranges_info);
 console.log(ranges_info);
+
+jQuery("document").ready(function(){
+    jQuery("div[id^=input_group_]").each(function(){
+            var current_id = jQuery(this).find("span:first-child input").val();
+            var current_id = current_id.substr(1,current_id.length);
+            jQuery(this).find("span:first-child input").val(current_id);
+    });
+});
+
 function Confirm(index)
 {
     var ranges_name = jQuery('#hrm_salary_ranges_id_'+index).val();
@@ -50,7 +58,7 @@ function Confirm(index)
 function CheckRanges()
 {
     $check = true;
-    
+    var salary_ranges = <?php echo String::array2js([[=salary_ranges=]]); ?>;
     for(var i = 100; i <= input_count; i++)
     {
         if(jQuery('#hrm_salary_ranges_id_'+i).val() != undefined)
@@ -63,10 +71,10 @@ function CheckRanges()
                 $check=false;
             }         
         }
-    };
+    }
     if($check==false)
     {
-        alert("Không Thể Nhập Trùng Bậc Lương!!!");
+        alert("Không Thể Nhập Trùng Bậc Lương Hoặc Không Chọn Bậc Lương!!!");
         return false;
     }else
     {
