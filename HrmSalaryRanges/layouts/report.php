@@ -17,10 +17,10 @@
             </tr>
             <tr>
                 <td style="float: left;">
-                    <input type="submit" style="width: 105px;" value="Đồng Ý"/>
+                    <input type="submit" style="width: 105px;" value="Đồng Ý" formtarget="_blank"/>
                 </td>
                 <td style="float: right;">
-                    <input type="button" onclick="view()" style="width: 105px;" value="Xem Danh Sách"/>
+                    <input type="button" onclick="view()" style="width: 105px;" value="Xem Danh Sách" formtarget="_blank"/>
                 </td>
             </tr>
         </tbody>
@@ -29,6 +29,6 @@
 <script>
 function view()
 {
-    window.location="http://newwaypms.ddns.net:8087/develop/?page=hrm_salary_ranges&cmd=view";   
+    window.open("http://newwaypms.ddns.net:8087/develop/?page=hrm_salary_ranges&cmd=view",'_blank');   
 }
 </script>

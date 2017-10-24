@@ -37,7 +37,7 @@ class ViewForm extends Form
                                 hrm_salary_coefficients.id as id,
                                 hrm_salary_coefficients.hrm_regency_id as regency_id,
                                 hrm_salary_coefficients.hrm_salary_ranges_id,
-                                nvl(hrm_salary_coefficients.salary_coefficients,0) as salary_coefficients,
+                                hrm_salary_coefficients.salary_coefficients as salary_coefficients,
                                 hrm_regency.name as regrncy_name
                             FROM
                                 hrm_salary_coefficients
@@ -70,6 +70,7 @@ class ViewForm extends Form
         {
             $regency[$key]['child'] = $info_salary_ranges;
         }
+        
         foreach($coefficients as $key => $value)
         {
             if(!isset($regency[$value['regency_id']]))
@@ -82,7 +83,7 @@ class ViewForm extends Form
             {
                 $regency[$value['regency_id']]['child'][$value['hrm_salary_ranges_id']] = array();
                 $regency[$value['regency_id']]['child'][$value['hrm_salary_ranges_id']]['name'] = $info_salary_ranges[$value['hrm_salary_ranges_id']]['name'];
-                $regency[$value['regency_id']]['child'][$value['hrm_salary_ranges_id']]['salary_coefficients'] = $value['salary_coefficients'];
+                $regency[$value['regency_id']]['child'][$value['hrm_salary_ranges_id']]['salary_coefficients'] = System::display_number($value['salary_coefficients']);
             }
         }
         //System::debug($regency);

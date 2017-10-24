@@ -33,7 +33,7 @@
         		<span class="multi-input-header" style="width:230px;">Ten Mon</span>
         	    <span class="multi-input-header" style="width: 50px;">Xoa</span>
             </span>
-            <br clear="all" />
+            <br clear="all" style="text-align: center;" />
             
 <script>
     jQuery(document).ready(function()

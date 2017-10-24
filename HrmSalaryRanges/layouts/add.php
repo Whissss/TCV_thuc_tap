@@ -1,5 +1,10 @@
 <form  method="post" action="" id="h">
-<table width="500px" border="2px" style="text-align: center;">
+<table width="500px" border="2px" style="text-align: center; ">
+<h2 style="margin-left: 100px;;">
+    <!--LIST:regency_name-->
+        [[|regency_name.name|]]
+    <!--/LIST:regency_name-->
+</h2>
     <div>
         <input name="deleted_ids" id="deleted_ids" type="hidden" value="<?php echo URL::get('deleted_ids');?>"/>
         <span id="regency_all_elems">
@@ -31,16 +36,16 @@
             </span>
                 <!--IF:delete(User::can_delete(false,ANY_CATEGORY))-->
             <span class="multi-input">
-<img tabindex="-1" src='packages/core/skins/default/images/buttons/delete.png' onClick="if(Confirm('#xxxx#')){mi_delete_row($('input_group_#xxxx#'),'regency','#xxxx#',''); }" style="cursor: pointer;"/>
+<img tabindex="-1" src='packages/core/skins/default/images/buttons/delete.png' onClick="if(Confirm('#xxxx#')){mi_delete_row($('input_group_#xxxx#'),'regency','#xxxx#','');}" style="cursor: pointer;"/>
             </span>
                 <!--/IF:delete-->
         </div><br clear='all'/>
     </span> 
 </span>
+<div id="alert"></div>
 <script>
 var ranges_info = <?php echo isset($_REQUEST['regency'])?String::array2js($_REQUEST['regency']):'{}';?>;
 mi_init_rows('regency',ranges_info);
-console.log(ranges_info);
 
 jQuery("document").ready(function(){
     jQuery("div[id^=input_group_]").each(function(){
@@ -49,7 +54,6 @@ jQuery("document").ready(function(){
             jQuery(this).find("span:first-child input").val(current_id);
     });
 });
-
 function Confirm(index)
 {
     var ranges_name = jQuery('#hrm_salary_ranges_id_'+index).val();
@@ -72,13 +76,34 @@ function CheckRanges()
             }         
         }
     }
+    for(var i = 100 ; i<=input_count ; i++)
+    {
+         if(jQuery('#hrm_salary_ranges_id_'+i).val() != undefined)
+        {
+            var x = jQuery('#salary_coefficients_'+i).val();
+            var pattern = /^[0-9]{0,10}[\.]{0,1}[0-9]{0,10}$/;
+            if(pattern.test(x)){
+            }else{
+                alert("Chỉ Nhập Số Và Dấu Chấm Thay Cho Phần Thập Phân");
+                return false;
+            }
+            if(x===0)
+            {
+                return true;
+            }
+            if(x.length>1 && (x+0)==0){
+                alert('Nhập Sai Hệ Số !!!');
+                return false;
+            }
+        }
+    }
     if($check==false)
     {
         alert("Không Thể Nhập Trùng Bậc Lương Hoặc Không Chọn Bậc Lương!!!");
         return false;
     }else
     {
-        h.submit();
+       h.submit();
     }
 }
 </script>

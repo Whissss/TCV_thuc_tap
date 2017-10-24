@@ -7,7 +7,6 @@ class salaryrangesForm extends Form
         $this->link_js('packages/core/includes/js/multi_items.js');
 	}
     function on_submit(){
-        //System::debug($_REQUEST);
         if(URL::get('deleted_ids'))
 		{
 			$ids = explode(',',URL::get('deleted_ids'));
@@ -18,46 +17,64 @@ class salaryrangesForm extends Form
 		}
         if(isset($_REQUEST['id']))
         {
-            $regency = $_REQUEST['regency'];
+            $check = DB::fetch_all("
+                                SELECT
+                                    id,
+                                    name
+                                FROM
+                                    hrm_regency
+                                WHERE
+                                    id = ".Url::get('id')."
             
-            foreach($regency as $key => $value)
+            ");
+            if(!empty($check))
             {
-                $info = array(
-                    'hrm_regency_id'        => $_REQUEST['id'] ,
-                    'hrm_salary_ranges_id'  => $value['salary_id'],
-                    'salary_coefficients'   => $value['coefficients'] 
-                );
-                if($value['id']){
-                    DB::update('hrm_salary_coefficients',$info, 'id='.$value['id']);
-                }else{
-                    DB::insert('hrm_salary_coefficients',$info);
-                }
+                $regency = $_REQUEST['regency'];
+                foreach($regency as $key => $value)
+                {
+                    $info = array(
+                        'hrm_regency_id'        => $_REQUEST['id'] ,
+                        'hrm_salary_ranges_id'  => $value['salary_id'],
+                        'salary_coefficients'   => $value['coefficients'],
+                    );
+                    if($value['id']){
+                        DB::update('hrm_salary_coefficients',$info, 'id='.$value['id']);
+                    }else{
+                        DB::insert('hrm_salary_coefficients',$info);
+                    }
+                    
+                    }
+                Url::redirect_url('?page=hrm_salary_ranges&cmd=add&id='.$_REQUEST['id']); 
+            }else{
+                header ("Location:?page=hrm_salary_ranges");
+                exit();
             }
-            //System::debug($name);
-            Url::redirect_url('?page=hrm_salary_ranges&cmd=add&id='.$_REQUEST['id']);        
         }
     }
 	function draw()
 	{
 	   $this->map = array();
-	   $ranges = DB::fetch_all('
+	   $ranges = DB::fetch_all("
                         SELECT
-                            id,
+                            '_' || id as id,
                             hrm_regency_id,
                             hrm_salary_ranges_id,
                             salary_coefficients
                         FROM 
                             hrm_salary_coefficients
                         WHERE
-                            hrm_regency_id ='.Url::get('id')
-       );
-       if(isset($_REQUEST['regency'])){
+                            hrm_regency_id =".Url::get('id')."
+                        ORDER BY hrm_salary_coefficients.hrm_salary_ranges_id
+    ");
+        foreach($ranges as $key=>$value)
+        {
+            $ranges[$key]['salary_coefficients'] = System::display_number($value['salary_coefficients']);
+        }
+        if(isset($_REQUEST['regency'])){
             $_REQUEST['regency'] = $_REQUEST['regency'];
-       }else{
+        }else{
             $_REQUEST['regency'] = $ranges ;
-       }
-       //System::debug($_REQUEST['regency']);
-       
+        }
 	    $sql = DB::fetch_all("
                 SELECT
                     id,
@@ -65,12 +82,22 @@ class salaryrangesForm extends Form
                 FROM
                     hrm_salary_ranges
         ");
-        $ranges_opt = '<option value="">'.Portal::language('select').'</option>';
+        $ranges_opt = '<option value="0">'.Portal::language('select').'</option>';
         $this->map['salary_ranges'] = $sql;
         foreach($sql as $key1 => $value1)
             {
                 $ranges_opt .= '<option value="'.$value1['id'].'">'.$value1['name'].'</option>'; 
             }
+        $regency_name = DB::fetch_all("
+                                SELECT
+                                    id,
+                                    name
+                                FROM
+                                    hrm_regency
+                                WHERE
+                                    id =".Url::get('id')."
+        ");
+        $this->map['regency_name'] = $regency_name ;
         $this->map['ranges'] = $ranges_opt;
 	    $this->parse_layout('add',$this->map);				
 	}

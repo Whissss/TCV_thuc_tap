@@ -23,8 +23,7 @@ class HrmSalaryRanges extends Module
                 $this->add_form(new HrmSalaryRangesForm());
            break;
         }
-        
-    }
+}
     }
     else
     {

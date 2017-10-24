@@ -1,12 +1,9 @@
 <style>
-table,tr,td{
-        border: 1px solid;
-    }
 td{
     height: 25px;
 }
 td:hover{
-        background-color:pink;
+        background-color: #c4c4c4;
     }
 #head:hover
 {
@@ -36,11 +33,14 @@ td:hover{
             </div>
 
 <br /><br /><br />
-<table style="width:80%; text-align: center; margin: auto;">
+<form action="" method="post">
+<table style="width:80%; text-align: center; margin: auto;" border="1">
     <tr id="hello">
+        <input name="edit_ids" type="hidden" id="edit_ids"/>
         <td rowspan="2" id="head"><strong>[[.id.]]</strong></td>
         <td rowspan="2" id="head"><strong >[[.regency.]]<strong></td>
-        <td colspan="7" id="head"><strong >[[.coefficient.]]<strong></td>
+        <td colspan="9" id="head"><strong >[[.coefficient.]]/[[.salary_ranges.]]<strong></td>
+        <td rowspan="2" id="head"><strong >[[.edit.]]<strong></td>
     </tr>
     <tr style="text-align: center;">
             [[|ranges|]]
@@ -48,11 +48,37 @@ td:hover{
     <?php $i=1; ?>
     <!--LIST:regency-->
     <tr>
-        <td style="width: 40px;" id="head"><?php echo $i++; ?></td>
-        <td><strong>[[|regency.name|]]</strong></td>
+        <td style="width: 40px;" id="head" rowspan="2"><?php echo $i++; ?></td>
+        <td colspan="11" style="text-align: left; border-bottom-style: dotted;"><strong>[[|regency.name|]]</strong></td>
+    </tr>
+    <tr>
+        <td>- Hệ số</td>
         <!--LIST:regency.child-->
-        <td>[[|regency.child.salary_coefficients|]]</td>
+        <td style="border-top: hidden;">[[|regency.child.salary_coefficients|]]</td>
         <!--/LIST:regency.child-->
+        <td><img src="packages/core/skins/default/images/buttons/edit.png" onclick="edit([[|regency.id|]])"/></td>
     </tr>
     <!--/LIST:regency-->
-</table><br /><br /><br /><br /><br />
+    
+</table><br /><br />
+<div style="font-size: 14px; margin-left: 145px; font:14px arial;">
+Công ty TNHH phát triển du lịch quốc tế Phượng Hoàng áp dụng mức lương tối thiểu vùng là <b style="font-size: 15px;">3.320.000đ/tháng</b>. Khi Nhà nước có sự thay đổi mức lương tối thiểu vùng<br/> Doanh nghiệp 
+<span style="font-size: 14px;">sẽ điều chỉnh cho phù hợp.								
+Mức lương = hệ số  x  Mức lương tối thiểu vùng x 7% .</span>
+</div>
+<br /><br /><br /><br />
+<div style="text-align: center; margin-left: 800px; font:14px arial"><i>Bắc Ninh, Ngày 10 tháng 01 năm 2017</i></div>
+<br /><br />
+<div  style="text-align: center; margin-left: 780px;">CÔNG TY  TNHH PTDL QUỐC TẾ PHƯỢNG HOÀNG<br /><span style="font:14px arital"> TỔNG GIÁM ĐỐC </span>						
+<br /><br /><br /><br />
+<br /><br /><br /><br />
+<br /><br /><br /><br />
+</div>
+
+</form>
+<script>
+    function edit(id)
+    {
+       window.location="http://newwaypms.ddns.net:8087/develop/?page=hrm_salary_ranges&cmd=add&id="+id; 
+    }
+</script>
