@@ -1,10 +1,13 @@
 <form  method="post" action="" id="h">
 <table width="500px" border="2px" style="text-align: center; ">
-<h2 style="margin-left: 100px;;">
+<h3 style="margin-left:15px;">
+    <!--LIST:department_name-->
+       [[.department.]] : [[|department_name.name|]]
+    <!--/LIST:department_name--><hr style="width: 80px; margin-left: 1px;" />
     <!--LIST:regency_name-->
-        [[|regency_name.name|]]
+       [[.regency.]] : [[|regency_name.name|]]
     <!--/LIST:regency_name-->
-</h2>
+</h3>
     <div>
         <input name="deleted_ids" id="deleted_ids" type="hidden" value="<?php echo URL::get('deleted_ids');?>"/>
         <span id="regency_all_elems">
@@ -12,21 +15,25 @@
                 <span class="multi-input-header" style="width:50px;">id</span>
         		<span class="multi-input-header" style="width:110px;">[[.ranges.]]</span>
                 <span class="multi-input-header" style="width:110px;">[[.coeficient.]]</span>
-        	    <span class="multi-input-header" style="width: 50px;">Xoa</span>
+        	    <span class="multi-input-header" style="width: 50px;">[[.delete.]]</span>
             </span>
             <br clear="all" />
 	    </span>
     </div>
 <div><a href="javascript:void(0);" onclick="mi_add_new_row('regency');" class="button-medium-add">Them</a></div>
 </table>
-<div><input name="save" type="button" id="save" onclick="CheckRanges()" value="[[.save.]]"/></div>
+<div>
+    <input name="save" type="button" id="save" onclick="CheckRanges()" value="[[.save.]]"/>
+    <input name="back" type="button" id="back" onclick="Back()" value="[[.home.]]"/>
+</div>
 <br /><br /><br /><br />
 </form>
+
 <span style="display:none">
     <span id="regency_sample">
         <div id="input_group_#xxxx#">
             <span class="multi-input">
-                <input name="regency[#xxxx#][id]" type="text" readonly="" id="id_#xxxx#"  tabindex="-1" style="width:50px;background:#EFEFEF;"/>
+                <input name="regency[#xxxx#][id]" type="text" readonly="" id="id_#xxxx#"  tabindex="-1" style="width:50px;background:#EFEFEF;" />
             </span>
             <span class="multi-input">
                 <select name="regency[#xxxx#][salary_id]" id="hrm_salary_ranges_id_#xxxx#" style="width:115px;">[[|ranges|]]</select>
@@ -42,7 +49,6 @@
         </div><br clear='all'/>
     </span> 
 </span>
-<div id="alert"></div>
 <script>
 var ranges_info = <?php echo isset($_REQUEST['regency'])?String::array2js($_REQUEST['regency']):'{}';?>;
 mi_init_rows('regency',ranges_info);
@@ -105,5 +111,10 @@ function CheckRanges()
     {
        h.submit();
     }
+    jQuery('#save').hide();
+}
+function Back()
+{
+    window.location="http://newwaypms.ddns.net:8087/develop/?page=hrm_salary_ranges";
 }
 </script>

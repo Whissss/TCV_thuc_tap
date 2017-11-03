@@ -14,29 +14,29 @@ class ViewForm extends Form
         $url_regency = Url::get('hrm_regency_id') ;
         if($url_regency)
         {
-            $_REQUEST['row'] = 'yes';
-        }
-        $info_salary_ranges = DB::fetch_all("
-                            SELECT
-                                id,
-                                name_".Portal::language()." as name,
-                                0 as salary_coefficients
-                            FROM
-                                hrm_salary_ranges                     
+                 $sql = DB::fetch_all("
+            SELECT
+                count(id) as id
+            FROM
+                hrm_regency
         ");
+        foreach($sql as $key=>$value)
+        {
+            $_REQUEST['row'] = $value['id'];
+        }
+        }
         $info_regency = DB::fetch_all("
                             SELECT
                                 id,
-                                name,
-                                code
+                                name
                             FROM
                                 hrm_regency
         ");
         $info_deparment = DB::fetch_all("
                             SELECT
                                 id,
-                                name
-                            FROM 
+                                 name
+                            FROM
                                 hrm_department
         ");
         $regency = DB::fetch_all("
@@ -111,37 +111,33 @@ class ViewForm extends Form
                 }
             }
         }
-        $salary_ranges = DB::fetch_all("
+        
+         $wage_bracket = DB::fetch_all("
                             SELECT
-                                hrm_salary_coefficients.id,
-                                hrm_regency_id ,
-                                hrm_department_id,
-                                hrm_salary_coefficients.hrm_salary_ranges_id,
-                                hrm_salary_coefficients.salary_coefficients as salary_coefficients
+                                hrm_wage_bracket.id as id,
+                                hrm_wage_bracket.hrm_regency_id ,
+                                hrm_wage_bracket.hrm_department_id ,
+                                hrm_wage_bracket.wage_bracket
                             FROM
-                                hrm_salary_coefficients
-                            INNER JOIN hrm_regency ON hrm_salary_coefficients.hrm_regency_id = hrm_regency.id
-                            INNER JOIN hrm_department ON hrm_salary_coefficients.hrm_department_id = hrm_department.id                           
-                            ORDER BY hrm_regency_id
+                                hrm_wage_bracket
+                            INNER JOIN hrm_regency ON hrm_wage_bracket.hrm_regency_id = hrm_regency.id
+                            INNER JOIN hrm_department ON hrm_wage_bracket.hrm_department_id = hrm_department.id                           
+                            ORDER BY id
         ");
         $ranges_manager ='';
-        foreach($info_salary_ranges as $key => $value)
-        {
-            $ranges_manager .= "<td style='width:85px;' id='head'><strong>".$value['name'].'</strong></td>'; 
-        }
         foreach($regency as $key => $value)
         {
-            $regency[$key]['child'] = $info_salary_ranges;
+            $regency[$key]['wage'] = 0;
         }
         foreach($department as $key => $value)
         {
             $department[$key]['regencry'] = $regency;  
         }
-        foreach($salary_ranges as $key => $value)
+        foreach($wage_bracket as $key => $value)
         {
-            if(isset($department[$value['hrm_department_id']]['regencry'][$value['hrm_regency_id']]['child'][$value['hrm_salary_ranges_id']]))
+            if(isset($department[$value['hrm_department_id']]['regencry'][$value['hrm_regency_id']]['wage']))
             {
-                $department[$value['hrm_department_id']]['regencry'][$value['hrm_regency_id']]['child'][$value['hrm_salary_ranges_id']]['salary_coefficients'] = System::display_number($value['salary_coefficients']);                
+                $department[$value['hrm_department_id']]['regencry'][$value['hrm_regency_id']]['wage']= System::display_number($value['wage_bracket']);                
             }
         }
         $regency_manager = DB::fetch_all("
@@ -190,23 +186,19 @@ class ViewForm extends Form
                             ORDER BY id
         ");
         $ranges = '';
-        foreach($info_salary_ranges as $key => $value)
-        {
-            $ranges .= "<td style='width:85px;' id='head'><strong>".$value['name'].'</strong></td>'; 
-        }
         foreach($regency_manager as $key => $value)
         {
-            $regency_manager[$key]['child'] = $info_salary_ranges;
+            $regency_manager[$key]['wage'] = 0;
         }
         foreach($department_manager as $key => $value)
         {
-            $department_manager[$key]['regencry'] = $regency_manager;  
+            $department_manager[$key]['regencry'] = $regency_manager;
         }
-        foreach($salary_ranges as $key => $value)
+        foreach($wage_bracket as  $key=>$value)
         {
-            if(isset($department_manager[$value['hrm_department_id']]['regencry'][$value['hrm_regency_id']]['child'][$value['hrm_salary_ranges_id']]))
+            if(isset($department_manager[$value['hrm_department_id']]['regencry'][$value['hrm_regency_id']]['wage']))
             {
-                $department_manager[$value['hrm_department_id']]['regencry'][$value['hrm_regency_id']]['child'][$value['hrm_salary_ranges_id']]['salary_coefficients'] = System::display_number($value['salary_coefficients']);                
+                $department_manager[$value['hrm_department_id']]['regencry'][$value['hrm_regency_id']]['wage'] = System::display_number($value['wage_bracket']);                
             }
         }
         if($url_department && !$url_regency)

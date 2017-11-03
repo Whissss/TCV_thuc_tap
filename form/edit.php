@@ -63,9 +63,9 @@ class editForm extends Form
        $ca = DB::fetch_all('SELECT * FROM ca_hoc');
        $ca_opt = '<option value="">'.Portal::language('select').'</option>';
        foreach($ca as $key1 => $value1)
-        {
+       {
             $ca_opt .= '<option value="'.$value1['id'].'">'.$value1['ca'].'</option>'; 
-        }
+       }
         
         $mh = DB::fetch_all('SELECT id,sub_name FROM subject ORDER BY id ASC');
         $mh_option = '<option value="">'.Portal::language('select_name').'</option>';

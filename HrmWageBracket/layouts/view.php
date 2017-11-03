@@ -3,7 +3,7 @@ td{
     height: 25px;
 }
 td:hover{
-    background-color: #c4c4c4;
+        background-color: #c4c4c4;
     }
 #head:hover
 {
@@ -11,16 +11,16 @@ td:hover{
 }
 #search
 {
-    float: right;
-    margin-right: 135px;
-    background: #009688;
-    height: 35px;
-    width: 90px;
-    margin-top: -15px;
-    font: normal normal normal 14px/1 FontAwesome ;
-    font-size: inherit;
-    display :inline-block;
-    color: white;
+   float: right;
+   margin-right: 135px;
+   background: #009688;
+   height: 35px;
+   width: 90px;
+   margin-top: -15px;
+   font: normal normal normal 14px/1 FontAwesome ;
+   font-size: inherit;
+   display :inline-block;
+   color: white;
 }
 table tr
 {
@@ -38,8 +38,7 @@ table tr
             </div>
 
              <div style="text-align: center;margin-top: 80px;">
-                <h2>BẢN ĐĂNG KÝ THANG LƯƠNG, BẢNG LƯƠNG</h2> 							
-                (Ban hành kèm theo Công văn số 02/CV-PH)								
+                <h2>BẢNG TỔNG HỢP THU NHẬP</h2>								
             </div>
 
 <br /><br /><br />
@@ -62,36 +61,34 @@ table tr
     <tr>
         <input name="edit_ids" type="hidden" id="edit_ids"/>
         <td rowspan="2" id="head"><strong>[[.id.]]</strong></td>
-        <td rowspan="2" style="width: 450px;" id="head"><strong >[[.department.]]/[[.regency.]]<strong></td>
-        <td colspan="9" id="head"><strong >[[.salary_ranges.]]/[[.coefficient.]]<strong></td>
+        <td rowspan="2" id="head"><strong >[[.department.]]/[[.regency.]]<strong></td>
+        <td id="head"><strong >[[.wage.]]<strong></td>
         <td rowspan="2" id="head"><strong >[[.edit.]]<strong></td>
     </tr>
     <tr style="text-align: center;">
-            [[|ranges|]]
-    </tr><?php $i=1;?>
+            <td id="head">[[.wagebracket.]](vnđ)</td>
+    </tr><?php $i=1; ?>
     <!--LIST:department_manager-->
         <tr>
             <td rowspan="4" style="width: 80px;" id="head" ><?php echo $i++; ?></td>
-            <td colspan="11" style="text-align: left; border-bottom-style: dotted; background: #c4c4c4; padding-left: 10px;" ><strong>[[|department_manager.name|]]</strong></td>
+            <td colspan="11" style="text-align: left; border-bottom-style: dotted;  background: #c4c4c4; padding-left: 10px;"><strong>[[|department_manager.name|]]</strong></td>
         </tr>
             <!--LIST:department_manager.regencry-->
         <tr>
-                <td style="text-align: left; padding-left:50px;" id="head">[[|department_manager.regencry.name|]]</td>
-            <!--LIST:department_manager.regencry.child-->
-                <td >[[|department_manager.regencry.child.salary_coefficients|]]</td>
-            <!--/LIST:department_manager.regencry.child-->
+                <td style="text-align: left; padding-left: 50px;" id="head">[[|department_manager.regencry.name|]]</td>
+                <td style="text-align: right; padding-right: 50px;">[[|department_manager.regencry.wage|]]</td>
                 <td><img src='packages/core/skins/default/images/edit-button-new.png' onclick="search_manager([[|department_manager.regencry.id|]],[[|department_manager.id|]])"/></td>
         </tr>
         <!--/LIST:department_manager.regencry-->
     <!--/LIST:department_manager-->
     <!--LIST:department-->
         <tr>
-            <td style="width: 40px;" id="head" <?php 
+            <td style="width: 40px;" id="head" <?php
                 if(isset($_REQUEST['row']))
                 {
                     echo "rowspan=2" ;
                 }else{
-                    $sql = DB::fetch_all("
+                     $sql = DB::fetch_all("
                                 SELECT
                                     count(id) as id
                                 FROM
@@ -104,14 +101,12 @@ table tr
                     echo "rowspan=".($a-2) ;
                 }
             ?>><?php echo $i++; ?></td>
-            <td colspan="11" style="text-align: left; border-bottom-style: dotted; background: #c4c4c4; padding-left: 10px;"><strong>[[|department.name|]]</strong></td>
+            <td colspan="11" style="text-align: left; border-bottom-style: dotted;  background: #c4c4c4; padding-left: 10px;"><strong>[[|department.name|]]</strong></td>
         </tr>
         <!--LIST:department.regencry-->
         <tr>
-            <td style="text-align: left; padding-left: 50px;" id="head">[[|department.regencry.name|]]</td>
-            <!--LIST:department.regencry.child-->
-            <td>[[|department.regencry.child.salary_coefficients|]]</td>
-            <!--/LIST:department.regencry.child-->
+            <td style="text-align: left; padding-left: 50px;"  id="head">[[|department.regencry.name|]]</td>
+            <td style="text-align: right; padding-right: 50px;">[[|department.regencry.wage|]]</td>
             <td><img src='packages/core/skins/default/images/edit-button-new.png' onclick="search_department([[|department.id|]],[[|department.regencry.id|]])"/></td>
         </tr>
         <!--/LIST:department.regencry-->
@@ -156,12 +151,12 @@ function Autocomplate_Department()
 }
 </script>
 <script>
-    function search_department(x,y)
+    function search_department(a,b)
     {
-        window.open("http://newwaypms.ddns.net:8087/develop/?page=hrm_salary_ranges&cmd=add&id_reg="+y+"&id_dep="+x,'_blank');
+        window.open("http://newwaypms.ddns.net:8087/develop/?page=hrm_wage_bracket&cmd=add&id_reg="+b+"&id_dep="+a,'_blank');
     }
     function search_manager(x,y)
     {
-        window.open("http://newwaypms.ddns.net:8087/develop/?page=hrm_salary_ranges&cmd=add&id_reg="+x+"&id_dep="+y,'_blank');
+        window.open("http://newwaypms.ddns.net:8087/develop/?page=hrm_wage_bracket&cmd=add&id_reg="+x+"&id_dep="+y,'_blank');
     }
 </script>
